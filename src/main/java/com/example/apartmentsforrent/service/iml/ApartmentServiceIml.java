@@ -6,6 +6,7 @@ import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
 import com.example.apartmentsforrent.persistence.model.Owner;
 import com.example.apartmentsforrent.persistence.repository.ApartmentRepository;
 import com.example.apartmentsforrent.service.ApartmentService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Year;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class ApartmentServiceIml implements ApartmentService {
 
     private final ApartmentRepository apartmentRepository;

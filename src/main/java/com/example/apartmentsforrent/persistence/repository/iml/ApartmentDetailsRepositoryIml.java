@@ -2,10 +2,12 @@ package com.example.apartmentsforrent.persistence.repository.iml;
 
 import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
 import com.example.apartmentsforrent.persistence.repository.ApartmentDetailsRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Optional;
 
+@Repository
 public class ApartmentDetailsRepositoryIml implements ApartmentDetailsRepository {
     private final HashMap<Long, ApartmentDetails> databaseMap = new HashMap<>();
     private long index = 0;

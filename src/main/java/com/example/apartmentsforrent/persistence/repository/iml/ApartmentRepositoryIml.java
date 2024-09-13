@@ -83,14 +83,15 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
     }
 
     @Override
-    public void save(Apartment entity) {
-        if (entity.getId() == null) {
-            entity.setId(index);
-            databaseMap.put(index, entity);
+    public Apartment save(Apartment apartment) {
+        if (apartment.getId() == null) {
+            apartment.setId(index);
+            databaseMap.put(index, apartment);
             index++;
         } else {
-            databaseMap.put(entity.getId(), entity);
+            databaseMap.put(apartment.getId(), apartment);
         }
+        return apartment;
     }
 
     @Override

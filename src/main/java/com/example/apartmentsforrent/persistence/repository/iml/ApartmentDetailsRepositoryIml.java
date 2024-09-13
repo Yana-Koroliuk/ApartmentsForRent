@@ -11,14 +11,15 @@ public class ApartmentDetailsRepositoryIml implements ApartmentDetailsRepository
     private long index = 0;
 
     @Override
-    public void save(ApartmentDetails entity) {
-        if (entity.getId() == null) {
-            entity.setId(index);
-            databaseMap.put(index, entity);
+    public ApartmentDetails save(ApartmentDetails apartmentDetails) {
+        if (apartmentDetails.getId() == null) {
+            apartmentDetails.setId(index);
+            databaseMap.put(index, apartmentDetails);
             index++;
         } else {
-            databaseMap.put(entity.getId(), entity);
+            databaseMap.put(apartmentDetails.getId(), apartmentDetails);
         }
+        return apartmentDetails;
     }
 
     @Override

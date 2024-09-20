@@ -46,11 +46,38 @@ public class ApartmentController {
     }
 
     @PostMapping("/create")
-    public String saveApartment(@ModelAttribute("apartmentDetailsDto") ApartmentDetailsDto apartmentDetailsDto, @ModelAttribute("apartmentDescriptionDto") ApartmentDescriptionDto apartmentDescriptionDto) {
+    public String createApartment(@ModelAttribute("apartmentDetailsDto") ApartmentDetailsDto apartmentDetailsDto,
+                                  @ModelAttribute("apartmentDescriptionDto") ApartmentDescriptionDto apartmentDescriptionDto) {
         ApartmentDetails apartmentDetails = apartmentDetailsDtoConverter.convertToApartmentDetails(apartmentDetailsDto);
         ApartmentDescription apartmentDescription = apartmentDescriptionDtoConverter.convertToApartmentDescription(apartmentDescriptionDto);
         apartmentService.create(apartmentDetails, apartmentDescription, new Owner());
-        return "redirect:/search";
+        return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editApartment(@PathVariable("id") Long id, Model model) {
+        Apartment apartment = apartmentService.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(String.format("Apartment with id %s does not exist", id))
+        );
+        model.addAttribute("apartment_id", id);
+        model.addAttribute("apartment_details", apartment.getApartmentDetails());
+        model.addAttribute("apartment_description", apartment.getApartmentDescription());
+        model.addAttribute("building_types", BuildingType.values());
+        return "edit_apartment";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editApartment(@ModelAttribute("apartmentDetailsDto") ApartmentDetailsDto apartmentDetailsDto,
+                                @ModelAttribute("apartmentDescriptionDto") ApartmentDescriptionDto apartmentDescriptionDto,
+                                @PathVariable("id") Long id) {
+        Apartment apartment = apartmentService.findById(id).orElseThrow(
+                () -> new IllegalArgumentException(String.format("Apartment with id %s does not exist", id)));
+        ApartmentDetails apartmentDetails = apartmentDetailsDtoConverter.convertToApartmentDetails(apartmentDetailsDto);
+        ApartmentDescription apartmentDescription = apartmentDescriptionDtoConverter.convertToApartmentDescription(apartmentDescriptionDto);
+        apartment.setApartmentDetails(apartmentDetails);
+        apartment.setApartmentDescription(apartmentDescription);
+        apartmentService.update(apartment);
+        return "redirect:/";
     }
 
     @DeleteMapping("/delete/{id}")

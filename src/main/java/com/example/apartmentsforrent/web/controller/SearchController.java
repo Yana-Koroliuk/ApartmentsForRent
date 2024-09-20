@@ -39,6 +39,6 @@ public class SearchController {
         List<Apartment> apartments = apartmentService.search(priceFrom, priceTo, quantityOfRoomsFrom, quantityOfRoomsTo, areaFrom,
                 areaTo, floorFrom, floorTo, buildYearFrom, buildYearTo);
         model.addAttribute("apartments", apartments);
-        return "/search";
+        return "search";
     }
 }

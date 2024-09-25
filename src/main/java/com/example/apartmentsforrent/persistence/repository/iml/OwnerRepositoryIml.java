@@ -3,10 +3,12 @@ package com.example.apartmentsforrent.persistence.repository.iml;
 import com.example.apartmentsforrent.persistence.model.Owner;
 import com.example.apartmentsforrent.persistence.repository.OwnerRepository;
 import jakarta.annotation.PostConstruct;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Optional;
 
+@Repository
 public class OwnerRepositoryIml implements OwnerRepository {
     private final HashMap<Long, Owner> databaseMap = new HashMap<>();
     private long index = 0;
@@ -75,7 +77,7 @@ public class OwnerRepositoryIml implements OwnerRepository {
     }
 
     @Override
-    public void deleteById(Long id  ) {
+    public void deleteById(Long id) {
         databaseMap.remove(id);
     }
 }

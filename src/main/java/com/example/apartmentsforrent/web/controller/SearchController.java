@@ -26,7 +26,8 @@ public class SearchController {
     }
 
     @PostMapping("/search")
-    public String searchApartments(Model model, @RequestParam(required = false) BigDecimal priceFrom,
+    public String searchApartments(Model model,
+                                   @RequestParam(required = false) BigDecimal priceFrom,
                                    @RequestParam(required = false) BigDecimal priceTo,
                                    @RequestParam(required = false) Integer quantityOfRoomsFrom,
                                    @RequestParam(required = false) Integer quantityOfRoomsTo,

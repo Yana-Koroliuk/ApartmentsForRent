@@ -28,4 +28,9 @@ public class ConverterConfiguration {
     public ApartmentConverter apartmentConverter() {
         return new ApartmentConverter();
     }
+
+    @Bean
+    public OwnerDtoConverter ownerDtoConverter() {
+        return new OwnerDtoConverter();
+    }
 }

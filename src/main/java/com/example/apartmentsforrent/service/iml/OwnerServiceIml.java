@@ -6,6 +6,8 @@ import com.example.apartmentsforrent.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class OwnerServiceIml implements OwnerService {
     OwnerRepository ownerRepository;
@@ -21,13 +23,13 @@ public class OwnerServiceIml implements OwnerService {
     }
 
     @Override
-    public Owner getOwnerById(Long id) {
-        return ownerRepository.findById(id).orElse(null);
+    public Optional<Owner> getOwnerById(Long id) {
+        return ownerRepository.findById(id);
     }
 
     @Override
-    public Owner getOwnerByEmail(String email) {
-        return ownerRepository.findByEmail(email).orElse(null);
+    public Optional<Owner> getOwnerByEmail(String email) {
+        return ownerRepository.findByEmail(email);
     }
 
     @Override

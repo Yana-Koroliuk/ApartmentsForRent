@@ -37,6 +37,12 @@ public class ApartmentController {
         return "apartment";
     }
 
+    @GetMapping("/list")
+    public String getApartmentList(Model model) {
+        model.addAttribute("apartments", apartmentService.findAll());
+        return "apartment_list";
+    }
+
     @GetMapping("/create")
     public String createApartment(Model model) {
         model.addAttribute("apartment_details", new ApartmentDetailsDto());
@@ -51,7 +57,7 @@ public class ApartmentController {
         ApartmentDetails apartmentDetails = apartmentDetailsDtoConverter.convertToApartmentDetails(apartmentDetailsDto);
         ApartmentDescription apartmentDescription = apartmentDescriptionDtoConverter.convertToApartmentDescription(apartmentDescriptionDto);
         apartmentService.create(apartmentDetails, apartmentDescription, new Owner());
-        return "redirect:/";
+        return "redirect:/apartment/list";
     }
 
     @GetMapping("/edit/{id}")
@@ -77,12 +83,12 @@ public class ApartmentController {
         apartment.setApartmentDetails(apartmentDetails);
         apartment.setApartmentDescription(apartmentDescription);
         apartmentService.update(apartment);
-        return "redirect:/";
+        return "redirect:/apartment/list";
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteApartment(@PathVariable("id") Long id) {
         apartmentService.deleteById(id);
-        return "redirect:/";
+        return "redirect:/apartment/list";
     }
 }

@@ -32,7 +32,7 @@
             <p class="card-text"><strong>Floor:</strong> <span th:text="${apartment.apartmentDetails.floor}"></span></p>
             <p class="card-text"><strong>Build year:</strong> <span
                     th:text="${apartment.apartmentDetails.buildYear}"></span></p>
-            <p class="card-text"><strong>Price:</strong> $<span th:text="${apartment.apartmentDetails.price}"></span>
+            <p class="card-text"><strong>Price:</strong> <span th:text="${apartment.apartmentDetails.price} ?: 'No price added by owner'"></span>
             </p>
         </div>
     </div>

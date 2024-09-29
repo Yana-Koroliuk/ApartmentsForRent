@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/owner")
@@ -56,15 +58,13 @@ public class OwnerController {
 
     @PostMapping("/signin")
     public String signin(@ModelAttribute OwnerDto ownerDto, Model model, HttpSession session) {
-        Owner owner = ownerService.getOwnerByEmail(ownerDto.getEmail());
-        System.out.println(owner.getEmail());
-        System.out.println(owner.getPasswordHash());
+        Optional<Owner> ownerOptional = ownerService.getOwnerByEmail(ownerDto.getEmail());
 
-        if (owner == null || !owner.getPasswordHash().equals(ownerDto.getPasswordHash())) {
+        if (ownerOptional.isEmpty() || !ownerOptional.get().getPasswordHash().equals(ownerDto.getPasswordHash())) {
             model.addAttribute("error", "Invalid email or password!");
             return "signin";
         }
-
+        Owner owner = ownerOptional.get();
         session.setAttribute("owner", owner);
         model.addAttribute("owner", ownerDtoConverter.convertToOwnerDto(owner));
         return "redirect:/";

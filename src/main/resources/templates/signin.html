@@ -9,6 +9,7 @@
 <body>
 <div class="container">
     <h1 class="mt-4">Sign In</h1>
+    <p class="main__message" th:text="${param.error} ?: 'Fields are case sensitive'"></p>
     <form th:action="@{/owner/signin}" th:object="${ownerDto}" method="post">
         <div class="form-group">
             <label for="email">Email address</label>

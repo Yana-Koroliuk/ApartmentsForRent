@@ -56,7 +56,7 @@
           <label for="buildingType">Building Type</label>
           <select th:field="*{buildingType}" id="buildingType" class="form-control">
             <option value="" disabled selected>Select building type</option>
-            <option th:each="type : ${building_types}"
+            <option th:each="type : ${T(com.example.apartmentsforrent.persistence.model.BuildingType).values()}"
                     th:value="${type.name()}"
                     th:text="${type.displayValue}"
                     th:selected="${type.name()} == ${apartment_description.buildingType}">

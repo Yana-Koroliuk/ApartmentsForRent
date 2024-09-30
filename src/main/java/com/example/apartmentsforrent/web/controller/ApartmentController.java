@@ -47,7 +47,6 @@ public class ApartmentController {
     public String createApartment(Model model) {
         model.addAttribute("apartment_details", new ApartmentDetailsDto());
         model.addAttribute("apartment_description", new ApartmentDescriptionDto());
-        model.addAttribute("building_types", BuildingType.values());
         return "create_apartment";
     }
 
@@ -68,7 +67,6 @@ public class ApartmentController {
         model.addAttribute("apartment_id", id);
         model.addAttribute("apartment_details", apartment.getApartmentDetails());
         model.addAttribute("apartment_description", apartment.getApartmentDescription());
-        model.addAttribute("building_types", BuildingType.values());
         return "edit_apartment";
     }
 

@@ -18,7 +18,7 @@
             <label for="passwordHash">Password</label>
             <input type="password" th:field="*{passwordHash}" class="form-control" id="passwordHash" placeholder="Enter password" required>
         </div>
-        <div th:if="${error}">
+        <div th:unless="${error == null}">
             <p class="alert alert-danger" th:text="${error}"></p>
         </div>
         <button type="submit" class="btn btn-primary">Sign In</button>

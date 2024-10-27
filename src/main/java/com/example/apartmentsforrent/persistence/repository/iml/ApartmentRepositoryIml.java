@@ -21,6 +21,7 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
     @PostConstruct
     public void initializeDatabase() {
         Owner owner1 = new Owner.Builder()
+                .id(1L)
                 .name("Name1")
                 .surname("Surname1")
                 .email("owner1@gmail.com")
@@ -29,6 +30,7 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
                 .build();
 
         Owner owner2 = new Owner.Builder()
+                .id(2L)
                 .name("Name2")
                 .surname("Surname2")
                 .email("owner2@gmail.com")
@@ -37,18 +39,21 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
                 .build();
 
         ApartmentDescription apartmentDescription1 = new ApartmentDescription.Builder()
+                .id(1L)
                 .condition("Condition1")
                 .buildingType(BuildingType.FRAME)
                 .additionalInfo("Additional info1")
                 .build();
 
         ApartmentDescription apartmentDescription2 = new ApartmentDescription.Builder()
+                .id(2L)
                 .condition("Condition2")
                 .buildingType(BuildingType.BRICK)
                 .additionalInfo("Additional info2")
                 .build();
 
         ApartmentDetails apartmentDetails1 = new ApartmentDetails.Builder()
+                .id(1L)
                 .address("St. Bankova, b. 12")
                 .buildYear(Year.of(2018))
                 .price(new BigDecimal("1500000.50"))
@@ -58,6 +63,7 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
                 .build();
 
         ApartmentDetails apartmentDetails2 = new ApartmentDetails.Builder()
+                .id(2L)
                 .address("St. Peremohy, b. 21")
                 .buildYear(Year.of(2016))
                 .price(new BigDecimal("2000000.50"))

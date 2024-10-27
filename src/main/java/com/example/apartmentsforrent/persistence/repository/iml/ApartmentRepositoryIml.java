@@ -119,14 +119,16 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
     }
 
     @Override
-    public List<Apartment> search(BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom, Integer quantityOfRoomsTo,
-                                  Float areaFrom, Float areaTo, Integer floorFrom, Integer floorTo, Year buildYearFrom, Year buildYearTo) {
+    public List<Apartment> getAllWithFiltering(int page, int size, BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom, Integer quantityOfRoomsTo,
+                                               Float areaFrom, Float areaTo, Integer floorFrom, Integer floorTo, Year buildYearFrom, Year buildYearTo) {
         return databaseMap.values().stream()
                 .filter(apartment -> checkerProvider().check(priceFrom, priceTo, apartment.getApartmentDetails().getPrice(), BigDecimal.ZERO))
                 .filter(apartment -> checkerProvider().check(quantityOfRoomsFrom, quantityOfRoomsTo, apartment.getApartmentDetails().getQuantityOfRooms(), 0))
                 .filter(apartment -> checkerProvider().check(areaFrom, areaTo, apartment.getApartmentDetails().getArea(), 0f))
                 .filter(apartment -> checkerProvider().check(floorFrom, floorTo, apartment.getApartmentDetails().getFloor(), 0))
                 .filter(apartment -> checkerProvider().check(buildYearFrom, buildYearTo, apartment.getApartmentDetails().getBuildYear(), Year.of(0)))
+                .skip((long) (page - 1) * size)
+                .limit(size)
                 .toList();
     }
 

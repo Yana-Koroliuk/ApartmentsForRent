@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ApartmentService {
-    Apartment create(ApartmentDetails apartmentDetails, ApartmentDescription apartmentDescription, Owner owner);
+    Apartment create(Apartment apartment);
     Apartment update(Apartment apartment);
     void deleteById(Long id);
     Optional<Apartment> findById(Long id);
     List<Apartment> findAll();
-    List<Apartment> search(BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom, Integer quantityOfRoomsTo,
+    List<Apartment> getAllWithFiltering(int page, int size, BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom, Integer quantityOfRoomsTo,
                            Float areaFrom, Float areaTo, Integer floorFrom, Integer floorTo, Year buildYearFrom, Year buildYearTo);
 }

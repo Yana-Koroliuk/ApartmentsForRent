@@ -1,9 +1,6 @@
 package com.example.apartmentsforrent.service.iml;
 
 import com.example.apartmentsforrent.persistence.model.Apartment;
-import com.example.apartmentsforrent.persistence.model.ApartmentDescription;
-import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
-import com.example.apartmentsforrent.persistence.model.Owner;
 import com.example.apartmentsforrent.persistence.repository.ApartmentRepository;
 import com.example.apartmentsforrent.service.ApartmentService;
 import org.springframework.stereotype.Service;
@@ -24,12 +21,7 @@ public class ApartmentServiceIml implements ApartmentService {
     }
 
     @Override
-    public Apartment create(ApartmentDetails apartmentDetails, ApartmentDescription apartmentDescription, Owner owner) {
-        Apartment apartment = new Apartment.Builder()
-                .apartmentDetails(apartmentDetails)
-                .apartmentDescription(apartmentDescription)
-                .owner(owner)
-                .build();
+    public Apartment create(Apartment apartment) {
         return apartmentRepository.save(apartment);
     }
 
@@ -62,10 +54,10 @@ public class ApartmentServiceIml implements ApartmentService {
     }
 
     @Override
-    public List<Apartment> search(BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom,
+    public List<Apartment> getAllWithFiltering(int page, int size, BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom,
                                   Integer quantityOfRoomsTo, Float areaFrom, Float areaTo, Integer floorFrom,
                                   Integer floorTo, Year buildYearFrom, Year buildYearTo) {
-        return apartmentRepository.search(priceFrom, priceTo, quantityOfRoomsFrom, quantityOfRoomsTo, areaFrom,
+        return apartmentRepository.getAllWithFiltering(page, size, priceFrom, priceTo, quantityOfRoomsFrom, quantityOfRoomsTo, areaFrom,
                 areaTo, floorFrom, floorTo, buildYearFrom, buildYearTo);
     }
 }

@@ -148,4 +148,67 @@ public class ApartmentController {
                 .collect(Collectors.toList()));
     }
 
+    @Operation(summary = "Get all apartments",
+            description = "This method returns all apartments with optional pagination. Returns 400 if page or size attributes are invalid.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartment list returned",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApartmentDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid page or size attributes supplied", content = @Content)})
+    @GetMapping
+    public ResponseEntity<List<ApartmentDto>> findAll(
+            @Parameter(description = "Page to retrieve, starting from 1")
+            @RequestParam(required = false) Integer page,
+            @Parameter(description = "Number of records per page")
+            @RequestParam(required = false) Integer size) {
+
+        List<Apartment> apartments;
+        if (page != null && size != null && page > 0 && size > 0) {
+            apartments = apartmentService.findAllWithPagination(page, size);
+        } else {
+            apartments = apartmentService.findAll();
+        }
+
+        List<ApartmentDto> apartmentDtos = apartments.stream()
+                .map(apartmentConverter::convertToApartmentDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(apartmentDtos);
+    }
+
+    @Operation(summary = "Delete apartment by its id",
+            description = "This method deletes an apartment by its ID with status 200 if deletion was successful. Returns 404 if the apartment is not found.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartment deleted"),
+            @ApiResponse(responseCode = "404", description = "Apartment not found", content = @Content)})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteApartment(@Parameter(description = "Id of apartment", required = true)
+                                                @PathVariable Long id) {
+        apartmentService.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        apartmentService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Update apartment by its id",
+            description = "This method updates an apartment by its ID with status 200 if the update was successful. Returns 400 if the apartment DTO provided is invalid. Returns 404 if the apartment is not found.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartment updated",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApartmentDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid apartment DTO supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Apartment not found", content = @Content)})
+    @PutMapping("/{id}")
+    public ResponseEntity<ApartmentDto> updateApartment(@Parameter(description = "Id of apartment", required = true)
+                                                        @PathVariable Long id,
+                                                        @Parameter(description = "Apartment to update", required = true,
+                                                                schema = @Schema(implementation = ApartmentDto.class))
+                                                        @RequestBody ApartmentDto apartmentDto) {
+        apartmentService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Apartment updatedApartment = apartmentDtoConverter.convertToApartment(apartmentDto);
+        updatedApartment.setId(id);
+
+        updatedApartment = apartmentService.update(updatedApartment);
+        return ResponseEntity.ok(apartmentConverter.convertToApartmentDto(updatedApartment));
+    }
+
 }

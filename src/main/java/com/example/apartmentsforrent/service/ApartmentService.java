@@ -1,9 +1,6 @@
 package com.example.apartmentsforrent.service;
 
 import com.example.apartmentsforrent.persistence.model.Apartment;
-import com.example.apartmentsforrent.persistence.model.ApartmentDescription;
-import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
-import com.example.apartmentsforrent.persistence.model.Owner;
 
 import java.math.BigDecimal;
 import java.time.Year;
@@ -18,4 +15,5 @@ public interface ApartmentService {
     List<Apartment> findAll();
     List<Apartment> getAllWithFiltering(int page, int size, BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom, Integer quantityOfRoomsTo,
                            Float areaFrom, Float areaTo, Integer floorFrom, Integer floorTo, Year buildYearFrom, Year buildYearTo);
+    List<Apartment> findAllWithPagination(int page, int size);
 }

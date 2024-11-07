@@ -138,6 +138,14 @@ public class ApartmentRepositoryIml implements ApartmentRepository {
                 .toList();
     }
 
+    @Override
+    public List<Apartment> findAllWithPagination(int page, int size) {
+        return databaseMap.values().stream()
+                .skip((long) (page - 1) * size)
+                .limit(size)
+                .toList();
+    }
+
     @Bean
     private Checker checkerProvider() {
         return new Checker();

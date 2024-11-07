@@ -60,4 +60,9 @@ public class ApartmentServiceIml implements ApartmentService {
         return apartmentRepository.getAllWithFiltering(page, size, priceFrom, priceTo, quantityOfRoomsFrom, quantityOfRoomsTo, areaFrom,
                 areaTo, floorFrom, floorTo, buildYearFrom, buildYearTo);
     }
+
+    @Override
+    public List<Apartment> findAllWithPagination(int page, int size) {
+        return apartmentRepository.findAllWithPagination(page, size);
+    }
 }

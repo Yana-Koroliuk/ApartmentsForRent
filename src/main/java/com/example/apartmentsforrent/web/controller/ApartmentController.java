@@ -59,7 +59,7 @@ public class ApartmentController {
             if (page <= 0 || size <= 0) {
                 return ResponseEntity.badRequest().build();
             }
-            List<ApartmentDto> apartments = apartmentService.findAllWithPagination(page, size)
+            List<ApartmentDto> apartments = apartmentService.findAll(page, size)
                     .stream()
                     .map(apartmentConverter::convertToApartmentDto)
                     .collect(Collectors.toList());

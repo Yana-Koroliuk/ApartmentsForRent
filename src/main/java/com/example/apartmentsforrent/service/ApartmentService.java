@@ -13,7 +13,7 @@ public interface ApartmentService {
     void deleteById(Long id);
     Optional<Apartment> findById(Long id);
     List<Apartment> findAll();
+    List<Apartment> findAll(int page, int size);
     List<Apartment> getAllWithFiltering(int page, int size, BigDecimal priceFrom, BigDecimal priceTo, Integer quantityOfRoomsFrom, Integer quantityOfRoomsTo,
                            Float areaFrom, Float areaTo, Integer floorFrom, Integer floorTo, Year buildYearFrom, Year buildYearTo);
-    List<Apartment> findAllWithPagination(int page, int size);
 }

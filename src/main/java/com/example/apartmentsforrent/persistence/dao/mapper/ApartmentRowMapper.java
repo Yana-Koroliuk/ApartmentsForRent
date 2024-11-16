@@ -9,12 +9,12 @@ import java.sql.SQLException;
 public class ApartmentRowMapper implements RowMapper<Apartment> {
 
     @Override
-    public Apartment mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    public Apartment mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Apartment.Builder()
-                .id(resultSet.getLong("id"))
-                .apartmentDetailsId(resultSet.getLong("details_id"))
-                .apartmentDescriptionId(resultSet.getLong("description_id"))
-                .ownerId(resultSet.getLong("owner_id"))
+                .id(rs.getLong("id"))
+                .apartmentDetailsId(rs.getLong("details_id"))
+                .apartmentDescriptionId(rs.getLong("description_id"))
+                .ownerId(rs.getLong("owner_id"))
                 .build();
     }
 }

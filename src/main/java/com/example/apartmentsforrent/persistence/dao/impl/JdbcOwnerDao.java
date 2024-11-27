@@ -1,0 +1,93 @@
+package com.example.apartmentsforrent.persistence.dao.impl;
+
+import com.example.apartmentsforrent.persistence.dao.OwnerDao;
+import com.example.apartmentsforrent.persistence.dao.SqlConstants;
+import com.example.apartmentsforrent.persistence.dao.mapper.OwnerRowMapper;
+import com.example.apartmentsforrent.persistence.model.Owner;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+
+import java.sql.PreparedStatement;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@Component
+public class JdbcOwnerDao implements OwnerDao {
+
+    private final JdbcTemplate template;
+
+    public JdbcOwnerDao(JdbcTemplate template) {
+        this.template = template;
+    }
+
+    @Override
+    public Optional<Owner> findByEmail(String email) {
+        List<Owner> result = template.query(connection -> {
+            PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_OWNER_BY_EMAIL);
+            statement.setString(1, email);
+            return statement;
+        }, new OwnerRowMapper());
+
+        if (result.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(result.get(0));
+        }
+    }
+
+    @Override
+    public Owner create(Owner entity) {
+        String name = entity.getName();
+        String surname = entity.getSurname();
+        String email = entity.getEmail();
+        String phoneNumber = entity.getPhoneNumber();
+        String passwordHash = entity.getPasswordHash();
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        template.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(SqlConstants.INSERT_OWNER, new String[]{"id"});
+            statement.setString(1, name);
+            statement.setString(2, surname);
+            statement.setString(3, email);
+            statement.setString(4, phoneNumber);
+            statement.setString(5, passwordHash);
+            return statement;
+        }, keyHolder);
+        entity.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
+        return entity;
+    }
+
+    @Override
+    public Optional<Owner> read(Long id) {
+        List<Owner> result = template.query(connection -> {
+            PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_OWNER_BY_ID);
+            statement.setLong(1, id);
+            return statement;
+        }, new OwnerRowMapper());
+
+        if (result.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(result.get(0));
+        }
+    }
+
+    @Override
+    public void update(Owner entity) {
+        String name = entity.getName();
+        String surname = entity.getSurname();
+        String email = entity.getEmail();
+        String phoneNumber = entity.getPhoneNumber();
+        String passwordHash = entity.getPasswordHash();
+
+        template.update(SqlConstants.UPDATE_OWNER_BY_ID, name, surname, email, phoneNumber, passwordHash, entity.getId());
+    }
+
+    @Override
+    public void delete(Long id) {
+        template.update(SqlConstants.DELETE_OWNER_BY_ID, id);
+    }
+}

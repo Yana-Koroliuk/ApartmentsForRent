@@ -3,6 +3,7 @@ package com.example.apartmentsforrent.service.iml;
 import com.example.apartmentsforrent.persistence.dao.ApartmentDao;
 import com.example.apartmentsforrent.persistence.dao.ApartmentDescriptionDao;
 import com.example.apartmentsforrent.persistence.dao.ApartmentDetailsDao;
+import com.example.apartmentsforrent.persistence.dao.OwnerDao;
 import com.example.apartmentsforrent.persistence.model.*;
 import com.example.apartmentsforrent.service.ApartmentService;
 import org.springframework.stereotype.Service;

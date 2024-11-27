@@ -40,4 +40,15 @@ public class SqlConstants {
     public static final String DELETE_DESCRIPTION_BY_ID = "DELETE FROM descriptions WHERE id = ?";
 
     public static final String SELECT_DESCRIPTION_BY_BUILDING_TYPE = "SELECT * FROM descriptions WHERE type = ?";
+
+    public static final String INSERT_OWNER = "INSERT INTO owners (name, surname, email, phone_number, password_hash) VALUES (?, ?, ?, ?, ?)";
+
+    public static final String SELECT_OWNER_BY_ID = "SELECT * FROM owners WHERE id = ?";
+
+    public static final String UPDATE_OWNER_BY_ID = "UPDATE owners SET name = ?, surname = ?, email = ?," +
+            "phone_number = ?, password_hash = ? WHERE id = ?";
+
+    public static final String DELETE_OWNER_BY_ID = "DELETE FROM owners WHERE id = ?";
+
+    public static final String SELECT_OWNER_BY_EMAIL = "SELECT * FROM owners WHERE email = ?";
 }

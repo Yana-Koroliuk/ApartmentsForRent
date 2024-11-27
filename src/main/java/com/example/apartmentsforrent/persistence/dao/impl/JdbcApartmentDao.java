@@ -74,4 +74,18 @@ public class JdbcApartmentDao implements ApartmentDao {
             return Optional.of(result.get(0));
         }
     }
+
+    @Override
+    public Optional<Apartment> findByDescriptionId(Long id) {
+        List<Apartment> result = jdbcTemplate.query(connection -> {
+            PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_APARTMENT_BY_DESCRIPTION_ID);
+            statement.setLong(1, id);
+            return statement;
+        }, new ApartmentRowMapper());
+        if (result.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(result.get(0));
+        }
+    }
 }

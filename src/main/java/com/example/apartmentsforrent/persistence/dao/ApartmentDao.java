@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface ApartmentDao extends CrudDao<Apartment, Long> {
     Optional<Apartment> findByDetailsId(Long id);
+    Optional<Apartment> findByDescriptionId(Long id);
 }

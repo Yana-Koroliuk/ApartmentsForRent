@@ -1,11 +1,9 @@
 package com.example.apartmentsforrent.service.iml;
 
 import com.example.apartmentsforrent.persistence.dao.ApartmentDao;
+import com.example.apartmentsforrent.persistence.dao.ApartmentDescriptionDao;
 import com.example.apartmentsforrent.persistence.dao.ApartmentDetailsDao;
-import com.example.apartmentsforrent.persistence.model.Apartment;
-import com.example.apartmentsforrent.persistence.model.ApartmentDescription;
-import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
-import com.example.apartmentsforrent.persistence.model.Owner;
+import com.example.apartmentsforrent.persistence.model.*;
 import com.example.apartmentsforrent.service.ApartmentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,6 +133,30 @@ public class ApartmentServiceImpl implements ApartmentService {
                 .map(this::buildApartmentByDetails)
                 .sorted(Comparator.comparing(Apartment::getId))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public List<Apartment> findByBuildingType(BuildingType buildingType) {
+        List<ApartmentDescription> descriptions = apartmentDescriptionDao.findByBuildingType(buildingType);
+
+        return descriptions.stream().map(description -> {
+            Apartment apartment = apartmentDao.findByDescriptionId(description.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("No apartment found for description id " + description.getId()));
+
+            ApartmentDetails details = apartmentDetailsDao.read(apartment.getApartmentDetailsId())
+                    .orElseThrow(() -> new IllegalArgumentException("No details found for id " + apartment.getApartmentDetailsId()));
+
+            Owner owner = ownerDao.read(apartment.getOwnerId())
+                    .orElseThrow(() -> new IllegalArgumentException("No owner found for id " + apartment.getOwnerId()));
+
+            // Set fetched details and owner into the apartment object
+            apartment.setApartmentDescription(description);
+            apartment.setApartmentDetails(details);
+            apartment.setOwner(owner);
+
+            return apartment;
+        }).collect(Collectors.toList());
     }
 
     private Apartment buildApartment(Apartment apartment) {

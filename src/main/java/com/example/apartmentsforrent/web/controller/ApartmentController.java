@@ -1,9 +1,6 @@
 package com.example.apartmentsforrent.web.controller;
 
-import com.example.apartmentsforrent.persistence.model.Apartment;
-import com.example.apartmentsforrent.persistence.model.ApartmentDescription;
-import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
-import com.example.apartmentsforrent.persistence.model.Owner;
+import com.example.apartmentsforrent.persistence.model.*;
 import com.example.apartmentsforrent.service.ApartmentService;
 import com.example.apartmentsforrent.web.converter.ApartmentConverter;
 import com.example.apartmentsforrent.web.converter.ApartmentDtoConverter;
@@ -214,5 +211,28 @@ public class ApartmentController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         apartmentService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get apartments by building type",
+            description = "This method returns all apartments that belong to a specific building type.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Apartments list returned",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ApartmentDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid building type supplied", content = @Content),
+            @ApiResponse(responseCode = "404", description = "No apartments found for the building type", content = @Content)})
+    @GetMapping("/building-type/{buildingType}")
+    public ResponseEntity<List<ApartmentDto>> findByBuildingType(@Parameter(description = "Type of the building", required = true)
+                                                                 @PathVariable BuildingType buildingType) {
+        List<Apartment> apartments = apartmentService.findByBuildingType(buildingType);
+
+        if (apartments.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No apartments found for the building type");
+        }
+
+        List<ApartmentDto> apartmentDtos = apartments.stream()
+                .map(apartmentConverter::convertToApartmentDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(apartmentDtos);
     }
 }

@@ -17,15 +17,15 @@ import java.util.Optional;
 @Component
 public class JdbcOwnerDao implements OwnerDao {
 
-    private final JdbcTemplate template;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcOwnerDao(JdbcTemplate template) {
-        this.template = template;
+        this.jdbcTemplate = template;
     }
 
     @Override
     public Optional<Owner> findByEmail(String email) {
-        List<Owner> result = template.query(connection -> {
+        List<Owner> result = jdbcTemplate.query(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_OWNER_BY_EMAIL);
             statement.setString(1, email);
             return statement;
@@ -47,7 +47,7 @@ public class JdbcOwnerDao implements OwnerDao {
         String passwordHash = entity.getPasswordHash();
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        template.update(connection -> {
+        jdbcTemplate.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.INSERT_OWNER, new String[]{"id"});
             statement.setString(1, name);
             statement.setString(2, surname);
@@ -62,7 +62,7 @@ public class JdbcOwnerDao implements OwnerDao {
 
     @Override
     public Optional<Owner> read(Long id) {
-        List<Owner> result = template.query(connection -> {
+        List<Owner> result = jdbcTemplate.query(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_OWNER_BY_ID);
             statement.setLong(1, id);
             return statement;
@@ -83,11 +83,11 @@ public class JdbcOwnerDao implements OwnerDao {
         String phoneNumber = entity.getPhoneNumber();
         String passwordHash = entity.getPasswordHash();
 
-        template.update(SqlConstants.UPDATE_OWNER_BY_ID, name, surname, email, phoneNumber, passwordHash, entity.getId());
+        jdbcTemplate.update(SqlConstants.UPDATE_OWNER_BY_ID, name, surname, email, phoneNumber, passwordHash, entity.getId());
     }
 
     @Override
     public void delete(Long id) {
-        template.update(SqlConstants.DELETE_OWNER_BY_ID, id);
+        jdbcTemplate.update(SqlConstants.DELETE_OWNER_BY_ID, id);
     }
 }

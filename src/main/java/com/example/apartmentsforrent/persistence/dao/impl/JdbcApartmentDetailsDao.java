@@ -35,7 +35,7 @@ public class JdbcApartmentDetailsDao implements ApartmentDetailsDao {
         int floor = entity.getFloor();
         int quantityOfRooms = entity.getQuantityOfRooms();
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.INSERT_DETAILS, new String[]{"id"});
             statement.setString(1, address);
@@ -92,7 +92,7 @@ public class JdbcApartmentDetailsDao implements ApartmentDetailsDao {
         int toIgnore = (page - 1) * size;
         return jdbcTemplate.query(connection -> {
            PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_DETAILS_WITH_LIMIT);
-           statement.setInt(1, page);
+           statement.setInt(1, size);
            statement.setInt(2, toIgnore);
            return statement;
         }, new ApartmentDetailsRowMapper());
@@ -134,12 +134,12 @@ public class JdbcApartmentDetailsDao implements ApartmentDetailsDao {
         };
         StringBuilder whereQuery = new StringBuilder();
         for (int i = 0; i < whereSubQueries.length; i++) {
-            if (!whereSubQueries[i].equals("")) {
-                if (i != 0 && !whereSubQueries[i - 1].equals("")) whereQuery.append(" AND ");
+            if (!whereSubQueries[i].isEmpty()) {
+                if (i != 0) whereQuery.append(" AND ");
                 whereQuery.append(whereSubQueries[i]);
             }
         }
-        if (whereQuery.length() != 0) whereQuery.insert(0, "WHERE ");
+        if (!whereQuery.isEmpty()) whereQuery.insert(0, "WHERE ");
         return "SELECT * FROM details " +
                 whereQuery +
                 " LIMIT " +

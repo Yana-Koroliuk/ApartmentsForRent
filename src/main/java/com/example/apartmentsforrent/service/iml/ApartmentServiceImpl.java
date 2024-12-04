@@ -151,7 +151,6 @@ public class ApartmentServiceImpl implements ApartmentService {
             Owner owner = ownerDao.read(apartment.getOwnerId())
                     .orElseThrow(() -> new IllegalArgumentException("No owner found for id " + apartment.getOwnerId()));
 
-            // Set fetched details and owner into the apartment object
             apartment.setApartmentDescription(description);
             apartment.setApartmentDetails(details);
             apartment.setOwner(owner);

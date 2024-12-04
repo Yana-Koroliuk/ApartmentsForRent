@@ -17,16 +17,16 @@ import java.util.Optional;
 
 @Component
 public class JdbcApartmentDescriptionDao implements ApartmentDescriptionDao {
-    private final JdbcTemplate template;
+    private final JdbcTemplate jdbcTemplate;
 
     public JdbcApartmentDescriptionDao(JdbcTemplate template) {
-        this.template = template;
+        this.jdbcTemplate = template;
     }
 
     @Override
     public List<ApartmentDescription> findByBuildingType(BuildingType buildingType) {
 
-        return template.query(connection -> {
+        return jdbcTemplate.query(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_DESCRIPTION_BY_BUILDING_TYPE);
             statement.setString(1, buildingType.toString());
             return statement;
@@ -40,7 +40,7 @@ public class JdbcApartmentDescriptionDao implements ApartmentDescriptionDao {
         String additionalInfo = entity.getAdditionalInfo();
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        template.update(connection -> {
+        jdbcTemplate.update(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.INSERT_DESCRIPTION, new String[]{"id"});
             statement.setString(1, condition);
             statement.setString(2, buildingType.toString());
@@ -53,7 +53,7 @@ public class JdbcApartmentDescriptionDao implements ApartmentDescriptionDao {
 
     @Override
     public Optional<ApartmentDescription> read(Long id) {
-        List<ApartmentDescription> result = template.query(connection -> {
+        List<ApartmentDescription> result = jdbcTemplate.query(connection -> {
             PreparedStatement statement = connection.prepareStatement(SqlConstants.SELECT_DESCRIPTION_BY_ID);
             statement.setLong(1, id);
             return statement;
@@ -72,11 +72,11 @@ public class JdbcApartmentDescriptionDao implements ApartmentDescriptionDao {
         BuildingType buildingType = entity.getBuildingType();
         String additionalInfo = entity.getAdditionalInfo();
 
-        template.update(SqlConstants.UPDATE_DESCRIPTION_BY_ID, condition, buildingType.toString(), additionalInfo, entity.getId());
+        jdbcTemplate.update(SqlConstants.UPDATE_DESCRIPTION_BY_ID, condition, buildingType.toString(), additionalInfo, entity.getId());
     }
 
     @Override
     public void delete(Long id) {
-        template.update(SqlConstants.DELETE_DESCRIPTION_BY_ID, id);
+        jdbcTemplate.update(SqlConstants.DELETE_DESCRIPTION_BY_ID, id);
     }
 }

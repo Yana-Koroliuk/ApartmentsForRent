@@ -30,11 +30,11 @@ public class SqlConstants {
     public static final String SELECT_DETAILS_BY_ADDRESS = "SELECT * FROM details WHERE address = ?";
 
     public static final String INSERT_DESCRIPTION = "INSERT INTO descriptions (condition, type, additional_info) " +
-            "VALUES (?, ?, ?)";
+            "VALUES (?, ?::building_type, ?)";
 
     public static final String SELECT_DESCRIPTION_BY_ID = "SELECT * FROM descriptions WHERE id = ?";
 
-    public static final String UPDATE_DESCRIPTION_BY_ID = "UPDATE descriptions SET condition = ?, type = ?, " +
+    public static final String UPDATE_DESCRIPTION_BY_ID = "UPDATE descriptions SET condition = ?, type = ?::building_type, " +
             "additional_info = ? WHERE id = ?";
 
     public static final String DELETE_DESCRIPTION_BY_ID = "DELETE FROM descriptions WHERE id = ?";

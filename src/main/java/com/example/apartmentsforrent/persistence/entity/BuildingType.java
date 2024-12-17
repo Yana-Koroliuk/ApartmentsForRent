@@ -1,4 +1,4 @@
-package com.example.apartmentsforrent.persistence.model;
+package com.example.apartmentsforrent.persistence.entity;
 
 public enum BuildingType {
     BRICK("Brick"),

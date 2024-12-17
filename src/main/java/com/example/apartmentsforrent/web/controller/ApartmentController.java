@@ -1,6 +1,6 @@
 package com.example.apartmentsforrent.web.controller;
 
-import com.example.apartmentsforrent.persistence.model.*;
+import com.example.apartmentsforrent.persistence.entity.*;
 import com.example.apartmentsforrent.service.ApartmentService;
 import com.example.apartmentsforrent.web.converter.ApartmentConverter;
 import com.example.apartmentsforrent.web.converter.ApartmentDtoConverter;

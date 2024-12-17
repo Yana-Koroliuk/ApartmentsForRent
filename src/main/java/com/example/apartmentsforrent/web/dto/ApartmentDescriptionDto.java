@@ -1,6 +1,6 @@
 package com.example.apartmentsforrent.web.dto;
 
-import com.example.apartmentsforrent.persistence.model.BuildingType;
+import com.example.apartmentsforrent.persistence.entity.BuildingType;
 
 public class ApartmentDescriptionDto {
     private String condition;

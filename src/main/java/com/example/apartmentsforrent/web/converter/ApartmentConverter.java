@@ -1,9 +1,9 @@
 package com.example.apartmentsforrent.web.converter;
 
-import com.example.apartmentsforrent.persistence.model.Apartment;
-import com.example.apartmentsforrent.persistence.model.ApartmentDescription;
-import com.example.apartmentsforrent.persistence.model.ApartmentDetails;
-import com.example.apartmentsforrent.persistence.model.Owner;
+import com.example.apartmentsforrent.persistence.entity.Apartment;
+import com.example.apartmentsforrent.persistence.entity.ApartmentDescription;
+import com.example.apartmentsforrent.persistence.entity.ApartmentDetails;
+import com.example.apartmentsforrent.persistence.entity.Owner;
 import com.example.apartmentsforrent.web.dto.ApartmentDescriptionDto;
 import com.example.apartmentsforrent.web.dto.ApartmentDetailsDto;
 import com.example.apartmentsforrent.web.dto.ApartmentDto;

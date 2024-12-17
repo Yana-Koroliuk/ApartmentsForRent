@@ -1,6 +1,6 @@
 package com.example.apartmentsforrent.service;
 
-import com.example.apartmentsforrent.persistence.model.Owner;
+import com.example.apartmentsforrent.persistence.entity.Owner;
 
 import java.util.Optional;
 

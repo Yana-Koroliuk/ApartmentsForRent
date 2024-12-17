@@ -11,8 +11,17 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @NamedQueries({
-        @NamedQuery(name = "Apartment.findByDetailsId", query = "SELECT a FROM Apartment a WHERE a.apartmentDetails.id = :detailsId"),
-        @NamedQuery(name = "Apartment.findByDescriptionId", query = "SELECT a FROM Apartment a WHERE a.apartmentDescription.id = :descriptionId")
+        @NamedQuery(
+                name = "Apartment.findByDetailsId",
+                query = "SELECT a FROM Apartment a WHERE a.apartmentDetails.id = :detailsId"
+        )
+})
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Apartment.findByDescriptionId",
+                query = "SELECT * FROM apartments WHERE description_id = :descriptionId",
+                resultClass = Apartment.class
+        )
 })
 public class Apartment {
 

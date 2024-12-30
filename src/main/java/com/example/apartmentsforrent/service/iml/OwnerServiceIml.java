@@ -1,52 +1,60 @@
 package com.example.apartmentsforrent.service.iml;
 
-import com.example.apartmentsforrent.persistence.dao.impl.JdbcOwnerDao;
-import com.example.apartmentsforrent.persistence.model.Owner;
+import com.example.apartmentsforrent.persistence.entity.Owner;
+import com.example.apartmentsforrent.persistence.repository.OwnerRepository;
 import com.example.apartmentsforrent.service.OwnerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class OwnerServiceIml implements OwnerService {
-    JdbcOwnerDao ownerDao;
-
-    @Autowired
-    public void setOwnerDao(JdbcOwnerDao ownerDao) {
-        this.ownerDao = ownerDao;
-    }
+    private final OwnerRepository ownerRepository;
 
     @Override
     public Owner createOwner(Owner owner) {
-        return ownerDao.create(owner);
+        if (ownerRepository.findByEmail(owner.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email is already taken");
+        }
+        return ownerRepository.save(owner);
     }
 
     @Override
     public void updateOwner(Owner owner) {
-        ownerDao.update(owner);
+        Owner existingOwner = ownerRepository.findById(owner.getId()).orElseThrow(() ->
+                new IllegalArgumentException(String.format("Owner with id %s does not exist", owner.getId())));
+
+        existingOwner.setName(owner.getName());
+        existingOwner.setSurname(owner.getSurname());
+        existingOwner.setEmail(owner.getEmail());
+        existingOwner.setPhoneNumber(owner.getPhoneNumber());
+        existingOwner.setPasswordHash(owner.getPasswordHash());
+
+        ownerRepository.save(existingOwner);
     }
 
     @Override
     public Optional<Owner> getOwnerById(Long id) {
-        return ownerDao.read(id);
+        return ownerRepository.findById(id);
     }
 
     @Override
     public Optional<Owner> getOwnerByEmail(String email) {
-        return ownerDao.findByEmail(email);
+        return ownerRepository.findByEmail(email);
     }
 
     @Override
     public void deleteOwner(Long id) {
-        if (ownerDao.read(id).isEmpty()) {
+        if (ownerRepository.findById(id).isEmpty()) {
             throw new IllegalArgumentException(String.format("Owner with id %s does not exist", id));
         }
-        ownerDao.delete(id);
+        ownerRepository.deleteById(id);
     }
 
     @Override
     public Boolean isEmailTaken(String email) {
-        return ownerDao.findByEmail(email).isPresent();
+        return ownerRepository.findByEmail(email).isPresent();
     }
 }
